@@ -1,0 +1,8 @@
+##Create Spinnaker pipleine using template
+schema: "1"
+pipeline:
+  application: my-test
+  name: simple-bake-deploy-apache
+  template:
+    source: spinnaker://simple-bake-deploy
+

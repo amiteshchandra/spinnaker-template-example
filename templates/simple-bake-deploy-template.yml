@@ -1,0 +1,80 @@
+##Spinnaker template for bake and deploy
+schema: "1"
+id: simple-bake-deploy
+protect: false
+metadata:
+  description: Template to create the Pipeline for bake and deploy
+  name: simple bake deploy 
+  owner: me
+  scopes: [global]
+configuration:
+  concurrentExecutions:
+    limitConcurrent: false
+    parallel: false
+  triggers: []
+stages:
+- id: bake
+  name: Bake Apache
+  type: bake
+  config:
+    amiName: simple-bake-deploy
+    baseLabel: release
+    baseOs: amazon-linux
+    cloudProviderType: aws
+    rebake: false
+    region: us-east-1
+    regions:
+    - us-east-1a
+    storeType: ebs
+    templateFileName: amazon_linux.json
+    vmType: hvm
+- id: jboss-deploy
+  name: Deploy
+  type: deploy
+  dependsOn:
+  - bake
+  config:
+    clusters:
+    - account: <account configured in spinnaker>
+      application: sample
+      availabilityZones:
+        us-east-1:
+        - us-east-1a
+        - us-east-1b
+      capacity:
+        desired: 1
+        max: 1
+        min: 1
+      blockDevices:
+      - deviceName: /dev/xvda
+        size: 20
+        volumeType: ebs
+      cloudProvider: aws
+      cooldown: 300
+      copySourceCustomBlockDeviceMappings: true
+      ebsOptimized: true
+      enabledMetrics: []
+      healthCheckGracePeriod: 60
+      healthCheckType: ec2
+      iamRole: base_iam_role
+      instanceMonitoring: false
+      instanceType: t2.micro
+      keyPair: mykey
+      loadBalancers: []
+      provider: aws
+      securityGroups: sample-sg
+      stack: sample-stack
+      strategy: none
+      subnetType: internal
+      suspendedProcesses:
+      - ScheduledActions
+      tags:
+        Name: my-sample
+        created-by: Spinnaker
+      targetGroups: []
+      targetHealthyDeployPercentage: 100
+      terminationPolicies:
+      - Default
+      useAmiBlockDeviceMappings: false
+      virtualizationType: null
+
