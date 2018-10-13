@@ -6,7 +6,7 @@ Spinnaker templates to create the pipelines for bake/deploy in public cloud like
 - Install the roer (https://github.com/spinnaker/roer)
 
 Steps to create the Pipeline
-- Clone this repository
+- Clone this repository (https://github.com/amiteshchandra/spinnaker-template-example)
 - Got to templates/ folder
 - Update values for following in keys in template
   - account: <account configured in spinnaker>
