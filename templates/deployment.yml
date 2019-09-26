@@ -1,1 +1,25 @@
-test
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-helm-deployment
+  namespace: spring-boot-example
+  labels:
+    app: spring-boot-helm-example
+spec:
+  selector:
+    matchLabels:
+      app: spring-boot--helm-example
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: spring-boot--helm-example
+    spec:
+      containers:
+        - name: spring-boot-example
+          image: ls-docker.repo.clarivate.io/spring-boot-example:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "100m"
